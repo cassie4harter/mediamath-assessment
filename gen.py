@@ -1,26 +1,17 @@
-import csv
 import random
-import string
+import csv
 
-def generate_random_string(length):
-    letters = string.ascii_letters
-    return ''.join(random.choice(letters) for _ in range(length))
+# Create a list of random integers
+integers = [random.randint(1, 10) for _ in range(10000000)]
 
-def generate_file(file_path, size_gb):
-    row_count = int(size_gb * 1024 * 1024 * 1024 / 64)  # Assuming each row is approximately 64 bytes
-    header = ['id', 'integer1', 'string1', 'string2']
+# Create a list of random strings
+strings = [random.choice("abcdefghijklmnopqrstuvwxyz0123456789") for _ in range(10000000)]
 
-    with open(file_path, 'w', newline='') as csvfile:
-        writer = csv.writer(csvfile, delimiter=',')
-        writer.writerow(header)
+# Create a list of tuples
+tuples = [(i, s1, s2) for i, s1, s2 in zip(integers, strings, strings)]
 
-        for i in range(1, row_count + 1):
-            integer1 = random.randint(1, 10)
-            string1 = generate_random_string(random.randint(1, 32))
-            string2 = generate_random_string(random.randint(1, 32))
-            writer.writerow([i, integer1, string1, string2])
-
-#     print(f"Generated file '{file_path}' with approximately {size_gb}GB.")
-
-print(generate_file('source.csv', 1))
-
+# Write the tuples to a CSV file
+with open("source.csv", "w", newline="") as f:
+    writer = csv.writer(f)
+    writer.writerow(["id", "integer1", "string1", "string2"])
+    writer.writerows(tuples)
