@@ -20,7 +20,7 @@ def generate_file(file_path, size_gb):
             string2 = generate_random_string(random.randint(1, 32))
             writer.writerow([i, integer1, string1, string2])
 
-    print(f"Generated file '{file_path}' with approximately {size_gb}GB.")
+#     print(f"Generated file '{file_path}' with approximately {size_gb}GB.")
 
-# Example usage: generate_file('source.csv', 1)  # Generates a 1GB file
+print(generate_file('source.csv', 1))
 
