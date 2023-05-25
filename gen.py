@@ -1,3 +1,5 @@
+pip install boto3
+
 import random
 import csv
 import boto3
