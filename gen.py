@@ -1,5 +1,6 @@
 import random
 import csv
+import boto3
 
 def generate_data():
   """Generates a 1GB file with random data."""
@@ -30,4 +31,11 @@ def generate_data():
       writer.writerow([id, integer1, string1, string2])
 
 if __name__ == "__main__":
+  # Create a boto3 client for S3.
+  s3 = boto3.client("s3")
+
+  # Generate the data.
   generate_data()
+
+  # Upload the file to the S3 bucket.
+  s3.upload_file("source.csv", "random-data-cassie", "source.csv")
