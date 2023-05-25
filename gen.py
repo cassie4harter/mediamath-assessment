@@ -1,40 +1,26 @@
-import random
 import csv
+import random
+import string
 
-# Create a file object for the output file
-with open("source.csv", "w", newline="") as f:
+def generate_random_string(length):
+    letters = string.ascii_letters
+    return ''.join(random.choice(letters) for _ in range(length))
 
-    # Write the header row
-    writer = csv.writer(f)
-    writer.writerow(["id", "integer1", "string1", "string2"])
+def generate_file(file_path, size_gb):
+    row_count = int(size_gb * 1024 * 1024 * 1024 / 64)  # Assuming each row is approximately 64 bytes
+    header = ['id', 'integer1', 'string1', 'string2']
 
-    # Generate 1GB of data
-    for i in range(10000000):
+    with open(file_path, 'w', newline='') as csvfile:
+        writer = csv.writer(csvfile, delimiter=',')
+        writer.writerow(header)
 
-        # Generate a random id
-        id = i + 1
+        for i in range(1, row_count + 1):
+            integer1 = random.randint(1, 10)
+            string1 = generate_random_string(random.randint(1, 32))
+            string2 = generate_random_string(random.randint(1, 32))
+            writer.writerow([i, integer1, string1, string2])
 
-        # Generate a random integer
-        integer1 = random.randint(1, 10)
+    print(f"Generated file '{file_path}' with approximately {size_gb}GB.")
 
-        # Generate a random string
-        string1 = "".join(random.choice("abcdefghijklmnopqrstuvwxyz") for _ in range(1, 33))
+# Example usage: generate_file('source.csv', 1)  # Generates a 1GB file
 
-        # Generate another random string
-        string2 = "".join(random.choice("abcdefghijklmnopqrstuvwxyz") for _ in range(1, 33))
-
-        # Write the row to the file
-        writer.writerow([id, integer1, string1, string2])
-
-# Download the file to local storage
-import requests
-
-# Get the file URL
-url = "https://raw.githubusercontent.com/bard/gen.py/main/source.csv"
-
-# Download the file
-response = requests.get(url)
-
-# Save the file to local storage
-with open("source.csv", "wb") as f:
-    f.write(response.content)
